@@ -3,6 +3,7 @@ import Protected from "@/components/Protected";
 import Topbar from "@/components/Topbar";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
+import { ApiError } from "@/lib/types";
 
 export default function Page() {
   const [stats, setStats] = useState<{
@@ -20,8 +21,9 @@ export default function Page() {
       try {
         const res = await api.get("/stats");
         setStats(res.data);
-      } catch (err: any) {
-        setError(err?.response?.data?.message || "Failed to load stats");
+      } catch (err) {
+        const apiError = err as ApiError;
+        setError(apiError?.response?.data?.message || "Failed to load stats");
       } finally {
         setLoading(false);
       }
