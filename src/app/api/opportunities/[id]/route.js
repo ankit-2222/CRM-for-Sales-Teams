@@ -47,10 +47,12 @@ export async function PUT(request, { params }) {
     }
 
     const updates = await request.json();
-    const result = await db.collection('opportunities').updateOne(
-      { _id: new ObjectId(params.id) },
-      { $set: { ...updates, updatedAt: new Date() } }
-    );
+    await db
+      .collection("opportunities")
+      .updateOne(
+        { _id: new ObjectId(params.id) },
+        { $set: { ...updates, updatedAt: new Date() } }
+      );
 
     const updatedOpportunity = await db.collection('opportunities').findOne({ _id: new ObjectId(params.id) });
     return NextResponse.json(updatedOpportunity);
